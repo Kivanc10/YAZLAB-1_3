@@ -1,0 +1,3 @@
+# An sample university web system that gives the users the ability to deploy their files to the system either a graduation project or research projects. These uploaded files can be queried by their features (it is done by algorithm). 
+This app is designed based on mongodb relational database and it is composed of two(2) services(docker-conatiner) which are section of web(frontend) and mongodb official container
+This project is aimed to design a system that gives the users ability to upload their files (as .pdf) to the system. In addition to the uploaded files can be queried by their features(features of files are extracted by the program). The project is designed based on authentication, uploading files, and CRUD operations.
