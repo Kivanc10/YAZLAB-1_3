@@ -315,6 +315,7 @@ func UpdateUserByItself(client *mongo.Client, givenName, username, lastname, num
 						"keywords":     temp.MetaData.KeyWords,
 						"juri":         temp.MetaData.Juri,
 						"No":           temp.MetaData.No,
+						"typeOfDoc":    temp.MetaData.Type,
 					}}})
 			// "$set": bson.M{
 			// 	"metadata": bson.M{"owner_name": os.Getenv("userName"), "deploy_date": temp.MetaData.DeployDate},
