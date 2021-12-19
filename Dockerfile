@@ -10,5 +10,5 @@ RUN go mod download
 RUN go build -o main .
 ## Our start command which kicks off
 ## our newly created binary executable
-
+# EXPOSE 8080
 CMD ["/app/main"]

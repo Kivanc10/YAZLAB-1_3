@@ -8,17 +8,11 @@ services:
         ports: 
             - "8080:8080"
     
-    mysql:
+    mongo:
         image: mongo
+        container_name: mongo
         ports: 
             - "27017:27017"
+        restart: always
         environment: 
-            MONGODB_URI : "mongodb://mongo/"
-            #MYSQL_ROOT_PASSWORD : "123456"
-            # MYSQL_USER : "root"
-            # MYSQL_RANDOM_ROOT_PASSWORD : "yes"
-            # MYSQL_PASSWORD : "root"
-            # MYSQL_DATABASE : "db_my_go_app"
-            # MYSQL_PORT : "3306"
-            # MYSQL_HOST : "db"
-        container_name: mysql-docker
+            MONGODB_URI : "mongodb://mongo:27017/"    
