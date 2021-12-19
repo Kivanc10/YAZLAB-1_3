@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uygulama içi</title>
+  <link rel="icon" href="/static/assets/kouLogo.png">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./static/css/inside.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+  <style>
+    .sampleDoc {
+      display: flex;
+      flex-direction: row;
+      padding-left: 20px;
+    }
+
+    .sampleDoc p {
+      color: blanchedalmond;
+    }
+
+    .sampleDoc a {
+      color: blanchedalmond;
+    }
+
+    .docFeatureName {
+      flex-grow: 1;
+    }
+
+    .docFeatureUploadDate {
+      flex-grow: 1;
+    }
+
+    .docFeatureDisplay {
+      flex-grow: 1;
+    }
+
+    #myDocs {
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="entryDiv">
+    <div id="welcomeDiv">
+      <h1>Hoşgeldin {{.userName}}</h1>
+    </div>
+    <div id="logoutDiv">
+      <input type="button" value="Çıkış yap" name="" id="logoutBtn">
+    </div>
+
+
+  </div>
+
+  <!-- <div id="tokenDiv">
+        <h3 id="token">{{.authToken}}</h3>
+    </div> -->
+  <br>
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Seçenekler</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/inside">Ana Sayfa <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a id="getDocuments" class="nav-link" href="/mydocs/all">Dokümanlarım</a>
+          </li>
+          <li class="nav-item">
+            <a href="/user/document" class="nav-link" href="#">Döküman ekle</a>
+          </li>
+          <li class="nav-item">
+            <a id="toUpdate" class="nav-link" href="/user/me/update">Güncelle</a>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link">
+              <input id="searchKeywordID" type="search" placeholder="Anahtar kelime ara.">
+              <input id="searchKeywordBtn" type="button" value="ara">
+            </div>
+          </li>
+          <li class="nav-item">
+            <select id="dateSelect" onchange="getOptionForDate(this)" class="nav-link">
+              <!-- <option value="Hepsi">Hepsi dönem</option>
+              <option value="Temp">Temp</option> -->
+            </select>
+          </li>
+          <li class="nav-item">
+            <select id="typeSelect" onchange="getOptionForType(this)" class="nav-link">
+              <!-- <option value="Hepsi">Hepsi type</option>
+              <option value="Temp">Temp</option> -->
+            </select>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <br>
+  <br>
+
+  <div id="myDocs">
+    <p id="infoDoc"></p>
+    <!-- <div class="sampleDoc">
+      <p class="docFeatureName">Filename</p>
+      <p class="docFeatureUploadDate"><a href="#">upload date</a></p>
+      <p class="docFeatureDisplay"><a href="#">display</a></p>
+    </div>
+    <div class="sampleDoc">
+      <p class="docFeatureName">Filename</p>
+      <p class="docFeatureUploadDate"><a href="#">upload date</a></p>
+      <p class="docFeatureDisplay"><a href="#">display</a></p>
+    </div> -->
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $("#logoutBtn").click(function (e) {
+      deleteDocs("{{.userName}}")
+      e.preventDefault()
+      $.ajax({
+        url: "/delete",
+        type: "DELETE",
+        success: function (res) {
+          alert("user has been deleted succesfully")
+          window.location.href = "/"
+        },
+        error: function (err) {
+          alert("an error occured during deleting the user ")
+        }
+      })
+    })
+    function createSelectBarForDate() {
+      var selectAtrr = document.getElementById("dateSelect")
+      var allOfThem = "Hepsi"
+      var firstOpt = document.createElement("option");
+      firstOpt.setAttribute("value", `allOf`)
+      var fT = document.createTextNode("Hepsi")
+      firstOpt.appendChild(fT)
+      selectAtrr.appendChild(firstOpt)
+      return selectAtrr
+    }
+
+    function createSelectBarForType() {
+      var selectAtrr = document.getElementById("typeSelect")
+      var allOfThem = "Hepsi"
+      var firstOpt = document.createElement("option");
+      firstOpt.setAttribute("value", `allOf`)
+      var fT = document.createTextNode("Hepsi")
+      firstOpt.appendChild(fT)
+      selectAtrr.appendChild(firstOpt)
+      return selectAtrr
+    }
+
+    function changeFunc() {
+      // var selectBox = document.getElementById("userSelect");
+      // var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      //var userSet = new Set() // --
+      $.ajax({
+        type: "GET",
+        url: "/mydocs/all",
+        success: function (res) {
+          //alert(res)
+          // var selectAtrr = document.getElementById("dateSelect")
+          // var allOfThem = "Hepsi"
+          // var firstOpt = document.createElement("option");
+          // firstOpt.setAttribute("value", `allOf`)
+          // var fT = document.createTextNode("Hepsi")
+          // firstOpt.appendChild(fT)
+          // selectAtrr.appendChild(firstOpt)
+          var selectAtrr = createSelectBarForDate()
+          var selectAtrr2 = createSelectBarForType()
+          var data = JSON.parse(res)
+          var mySet = new Set()
+          var mySet2 = new Set()
+          //arrangeOptionsForType()
+          for (let i = 0; i < data.length; i++) {
+
+            // var tempUserName = data[i].metadata.deploy_date
+            // var tempOPT = document.createElement("option");
+            // tempOPT.setAttribute("value", `${data[i].metadata.deploy_date}`)
+            // var t = document.createTextNode(tempUserName);
+            // if (!mySet.has(data[i].metadata.deploy_date)) {
+            //   mySet.add(data[i].metadata.deploy_date)
+            //   tempOPT.appendChild(t)
+            //   selectAtrr.appendChild(tempOPT)
+            // }
+            arrangeOptionsForDate(data[i], mySet, selectAtrr)
+            arrangeOptionsForType(data[i], mySet2, selectAtrr2)
+          }
+        },
+        error: function (err) {
+
+        }
+      })
+    }
+
+    function searcPdfByKeyword() {
+      document.getElementById("searchKeywordBtn").addEventListener("click", function (e) {
+        if (document.getElementById("searchKeywordID").value == "") {
+          alert("arama kısmına birşeyler yazın")
+        } else {
+          //alert(document.getElementById("searchKeywordID").value)
+          $.ajax({
+            type: "GET",
+            url: `/mydocs/all?keywords=${document.getElementById("searchKeywordID").value}`,
+            success: function (res) {
+              //  alert(res)
+              toHideElementWithoutClick()
+              if (res.trim() == "null") {
+                document.getElementById("infoDoc").textContent = "İlgili veri bulunamadı"
+              } else {
+                displayQueryResults(res)
+              }
+            },
+            error: function (err) {
+              alert("an error occured during searching")
+            }
+          })
+        }
+      })
+    }
+
+    function arrangeOptionsForType(subData, mySet2, selectAtrr2) { // data[i] subData
+      var mySet = new Set()
+      var tempType = subData.metadata.typeOfDoc
+      var tempOPT = document.createElement("option");
+      tempOPT.setAttribute("value", `${subData.metadata.typeOfDoc}`)
+      var t = document.createTextNode(tempType);
+      if (!mySet2.has(subData.metadata.typeOfDoc)) {
+        mySet2.add(subData.metadata.typeOfDoc)
+        tempOPT.appendChild(t)
+        selectAtrr2.appendChild(tempOPT)
+      }
+
+    }
+
+    function arrangeOptionsForDate(subData, mySet, selectAtrr) {
+      var tempUserName = subData.metadata.deploy_date
+      var tempOPT = document.createElement("option");
+      tempOPT.setAttribute("value", `${subData.metadata.deploy_date}`)
+      var t = document.createTextNode(tempUserName);
+      if (!mySet.has(subData.metadata.deploy_date)) {
+        mySet.add(subData.metadata.deploy_date)
+        tempOPT.appendChild(t)
+        selectAtrr.appendChild(tempOPT)
+      }
+    }
+
+    function getOptionForDate(el) {
+      document.getElementById("searchKeywordID").value="" //-----
+      const option = el.value;
+      if (option === 'esc') return
+      console.log(option);
+      if (option == "allOf") {
+        toHideElementWithoutClick()
+        alwaysFillDocs()
+
+      } else {
+        var e = document.getElementById("typeSelect")
+        var selected = e.value;
+        if (selected == "allOf" && option == "allOf") {
+          $.ajax({
+            type: "GET",
+            url: `/mydocs/all`,
+            success: function (res) {
+              toHideElementWithoutClick()
+              displayQueryResults(res)
+            },
+            error: function (err) {
+              alert("error caused by querying by name")
+            }
+          })
+        } else if (option == "allOf" && selected != "allOf") {
+          $.ajax({
+            type: "GET",
+            url: `/mydocs/all?typeOfDoc=${selected}`,
+            success: function (res) {
+              toHideElementWithoutClick()
+              displayQueryResults(res)
+            },
+            error: function (err) {
+              alert("error caused by querying by name")
+            }
+          })
+
+        } else if (option != "allOf" && selected == "allOf") {
+          $.ajax({
+            type: "GET",
+            url: `/mydocs/all?deploy_date=${option}`,
+            success: function (res) {
+              toHideElementWithoutClick()
+              displayQueryResults(res)
+            },
+            error: function (err) {
+              alert("error caused by querying by name")
+            }
+          })
+        } else if (option != "allOf" && selected != "allOf") {
+          $.ajax({
+            type: "GET",
+            url: `/mydocs/all?deploy_date=${option}&typeOfDoc=${selected}`,
+            success: function (res) {
+              toHideElementWithoutClick()
+              displayQueryResults(res)
+            },
+            error: function (err) {
+              alert("error caused by querying by name")
+            }
+          })
+        }
+
+      }
+      //alert(option) // to get user name
+
+      return option;
+    }
+
+    function getOptionForType(el) {
+      document.getElementById("searchKeywordID").value = "" //-----
+      const option = el.value;
+      if (option === 'esc') return
+      console.log(option);
+      if (option == "allOf") {
+        toHideElementWithoutClick()
+        alwaysFillDocs()
+
+      } else {
+        var e = document.getElementById("dateSelect")
+        var selected = e.value;
+        if (selected == "allOf" && option == "allOf") {
+          $.ajax({
+            type: "GET",
+            url: `/mydocs/all`,
+            success: function (res) {
+              toHideElementWithoutClick()
+              displayQueryResults(res)
+            },
+            error: function (err) {
+              alert("error caused by querying by name")
+            }
+          })
+        } else if (option == "allOf" && selected != "allOf") {
+          $.ajax({
+            type: "GET",
+            url: `/mydocs/all?deploy_date=${selected}`,
+            success: function (res) {
+              toHideElementWithoutClick()
+              displayQueryResults(res)
+            },
+            error: function (err) {
+              alert("error caused by querying by name")
+            }
+          })
+        } else if (option != "allOf" && selected == "allOf") {
+          $.ajax({
+            type: "GET",
+            url: `/mydocs/all?typeOfDoc=${option}`,
+            success: function (res) {
+              toHideElementWithoutClick()
+              displayQueryResults(res)
+            },
+            error: function (err) {
+              alert("error caused by querying by name")
+            }
+          })
+        } else if (option != "allOf" && selected != "allOf") {
+          $.ajax({
+            type: "GET",
+            url: `/mydocs/all?deploy_date=${selected}&typeOfDoc=${option}`,
+            success: function (res) {
+              toHideElementWithoutClick()
+              displayQueryResults(res)
+            },
+            error: function (err) {
+              alert("error caused by querying by name")
+            }
+          })
+        }
+
+      }
+      //alert(option) // to get user name
+
+      return option;
+    }
+
+    function toHideElementWithoutClick() {
+      var x = document.getElementById("myDocs").getElementsByClassName("sampleDoc")
+      for (let i = 0; i < x.length; i++) {
+        x[i].style.display = "none"
+      }
+    }
+
+    function deleteDocs(name) {
+      // document.getElementById(`${id}DocDel`).addEventListener("click",function (e) {
+      $.ajax({
+        type: "DELETE",
+        url: `/user/delete/allDocs/${name}`,
+        success: function (res) {
+          alert("kullanıcının bütün belgeleri silindi")
+          alwaysInvoke()
+          alwaysInvoke2()
+        },
+        error: function (err) {
+          alert("error occured during the delete the all docs")
+        }
+      })
+      //})
+
+    }
+
+    function displayQueryResults(response) {
+      if (response.trim() == "null") {
+        document.getElementById("infoDoc").textContent = "İlgili veri bulunamadı"
+      } else {
+        var data = JSON.parse(response)
+        document.getElementById("infoDoc").textContent = ""
+        for (let i = 0; i < data.length; i++) {
+          var div = document.createElement("div")
+          div.className = "sampleDoc"
+          var pName = document.createElement("p")
+          pName.className = "docFeatureName"
+          pName.textContent = data[i].filename
+          var pUploadDate = document.createElement("p")
+          pUploadDate.className = "docFeatureUploadDate"
+          //var aUpload = document.createElement("a")
+          //data[i].uploadDate
+          pUploadDate.textContent = data[i]["metadata"].deploy_date
+          var pDisplay = document.createElement("p")
+          pDisplay.className = "docFeatureDisplay"
+          var aDisplay = document.createElement("a")
+          aDisplay.target = "_blank"
+          aDisplay.href = `/display/doc/${data[i]._id}`
+          aDisplay.textContent = "Görüntüle"
+          pDisplay.appendChild(aDisplay)
+          div.appendChild(pName)
+          div.appendChild(pUploadDate)
+          div.appendChild(pDisplay)
+          document.getElementById("myDocs").appendChild(div)
+        }
+
+      }
+    }
+
+    function alwaysFillDocs() {
+      $.ajax({
+        url: "/mydocs/all",
+        type: "GET",
+        success: function (res) {
+          //alert(res + " type --> " + typeof res)
+          var data = JSON.parse(res)
+          if (res.trim() == "null") {
+            alert("there is no docs")
+          } else {
+            for (let i = 0; i < data.length; i++) {
+              var div = document.createElement("div")
+              div.className = "sampleDoc"
+              var pName = document.createElement("p")
+              pName.className = "docFeatureName"
+              pName.textContent = data[i].filename
+              var pUploadDate = document.createElement("p")
+              pUploadDate.className = "docFeatureUploadDate"
+              //var aUpload = document.createElement("a")
+              //data[i].uploadDate
+              pUploadDate.textContent = data[i]["metadata"].deploy_date
+              var pDisplay = document.createElement("p")
+              pDisplay.className = "docFeatureDisplay"
+              var aDisplay = document.createElement("a")
+              aDisplay.target = "_blank"
+              aDisplay.href = `/display/doc/${data[i]._id}`
+              aDisplay.textContent = "Görüntüle"
+              pDisplay.appendChild(aDisplay)
+              div.appendChild(pName)
+              div.appendChild(pUploadDate)
+              div.appendChild(pDisplay)
+              document.getElementById("myDocs").appendChild(div)
+            }
+          }
+        },
+        error: function (e) {
+          alert("an error occured " + e)
+        }
+      })
+    }
+    alwaysFillDocs()
+    changeFunc()
+    searcPdfByKeyword()
+
+  </script>
+</body>
+
+</html>

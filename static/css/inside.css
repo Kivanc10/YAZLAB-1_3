@@ -1,0 +1,33 @@
+body {
+    padding: 25px;
+    font-family: 'Fuzzy Bubbles', cursive;
+    background-color: slategrey;
+}
+
+h1 {
+    color: whitesmoke;
+}
+#token {
+    color: whitesmoke;
+}
+#entryDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+#welcomeDiv {
+    flex-grow: 5;
+}
+
+#logoutDiv {
+    flex-grow: 1;
+    padding-top: 29px;
+    justify-content: flex-end;
+}
+
+#logoutBtn {
+    border-radius: 10px;
+}
+
+
+

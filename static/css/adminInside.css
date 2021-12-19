@@ -1,0 +1,71 @@
+body {
+    padding: 25px;
+    background-color: slategray;
+}
+
+
+#userResults {    
+    margin-top: 15px;
+}
+
+.singleResult {
+    display: flex;
+    flex-direction: row;
+    margin-left: 15px;
+}
+
+.singleResult p {
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+
+#showUsers {
+    text-decoration-line: none;
+    color: turquoise;
+    font-weight: bold;
+    display: flex;
+    font-size: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+#entryLevel {
+    display: flex;
+    flex-direction: row;
+}
+
+h1 {
+    flex-grow: 5;
+    color: whitesmoke;
+}
+
+#logOutForAdmin {
+    flex-grow: 1;
+    border-radius: 15px;
+}
+
+.userId {
+    flex-grow: 1;
+}
+
+.userName {
+    flex-grow: 1;
+}
+
+.lastName {
+    flex-grow: 1;
+}
+
+.userType {
+    flex-grow: 1;
+}
+
+
+.linkToUpdate {
+    flex-grow: 1;
+}
+
+.linkToDelete {
+    flex-grow: 1;
+}

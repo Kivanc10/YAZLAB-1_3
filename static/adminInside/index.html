@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/adminInside.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        body {
+            padding: 25px;
+            background-color: slategray;
+        }
+
+        body a {
+            text-decoration-line: none;
+            color: navy;
+            font-weight: bold;
+        }
+
+        h2 {
+            padding-left: 10px;
+            color: deeppink;
+            font-weight: bold;
+            flex-grow: 5;
+        }
+
+        .docId {
+            flex-grow: 1;
+        }
+
+        .docName {
+            flex-grow: 1;
+        }
+
+        .belongTo {
+            flex-grow: 1;
+        }
+
+        .displayDoc {
+            flex-grow: 1;
+        }
+
+        #upperBav {
+            display: flex;
+            flex-direction: row;
+        }
+
+        #hideElement {
+            flex-grow: 1;
+        }
+
+        #showDocs {
+            display: inline;
+        }
+
+        #docsTab {
+            display: flex;
+            flex-direction: row;
+        }
+
+        #docsH2 {
+            flex-grow: 3;
+        }
+
+        #searchKeywordID {
+            flex-grow: 3;
+            font-size: small;
+        }
+
+        #searchKeywordBtn {
+            flex-grow: 3;
+        }
+
+        #userSelect {
+            flex-grow: 3;
+            margin-right: 10px;
+        }
+
+        #searchKeyword {
+            margin-right: 10px;
+        }
+
+        #typeSelect {
+            margin-right: 10px;
+        }
+
+        /* #showTemAll {
+            flex-grow: 3;
+            margin-right: 10px;
+        } */
+    </style>
+</head>
+
+<body>
+    <div id="entryLevel">
+        <h1>Admin</h1>
+        <input type="button" name="" value="Çıkış Yap" id="logOutForAdmin">
+    </div>
+    <hr>
+    <p><a id="showUsers" target="_blank" href="/users">Kullanıcıları göster</a></p>
+
+
+    <div id="userResults">
+        <div id="upperBav">
+            <h2>Kullanıcılar</h2>
+            <input id="hideElement" type="button" value="Döküman gizle">
+        </div>
+        <p id="noUser"></p>
+        <!-- <div class="singleResult">
+            <p class="userId">id</p>
+            <p class="userName">username</p>
+            <p class="lastName">lastname</p>
+            <p class="userType">birinci ogr</p>
+            <p class="linkToUpdate"><a href="">Güncelle</a></p>
+            <p class="linkToDelete"><a href="">Sil</a></p>
+        </div> -->
+        <!-- <p id="myUsers"></p> -->
+    </div>
+    <hr>
+    <div id="upperContainer">
+        <div id="docsTab">
+            <h2 id="docsH2">Dokümanlar</h2>
+            <select name="users" id="userSelect" onchange="getOptionForUser(this)">
+                <!-- <option value="all">Hepsi</option>
+                <option value="user1">User1</option> -->
+            </select>
+
+            <select id="dateSelect" onchange="getOptionForDate(this)" class="nav-link">
+                <!-- <option value="Hepsi">Hepsi dönem</option>
+                <option value="Temp">Temp</option> -->
+            </select>
+
+            <select id="typeSelect" onchange="getOptionForType(this)" class="nav-link">
+                <!-- <option value="Hepsi">Hepsi type</option>
+                <option value="Temp">Temp</option> -->
+            </select>
+
+            <!-- <input type="button" value="Hepsini göster" id="showTemAll"> -->
+            <input type="search" name="searchKeyword" id="searchKeywordID" placeholder="Anahtar kelimelere göre ara...">
+            <!-- <input type="search" name="searchName" id="searchByNameID" placeholder="İsme göre ara"> -->
+            <input type="button" value="Ara" name="searcSomething" id="searchKeywordBtn">
+        </div>
+        <div id="showDocs">
+            <!-- <div id="docsTab">
+                <h2 id="docsH2">Dokümanlar</h2>
+                <input type="search" name="searchKeyword" id="searchKeywordID" placeholder="ara...">
+                <input type="button" value="Ara" name="searcSomething" id="searchKeywordBtn">
+            </div> -->
+            <p id="infoDoc"></p>
+            <!-- <div class="singleResult">
+                <p class="docId">docId</p>
+                <p class="docName">filename</p>
+                <p class="belongTo">user</p>
+                <p class="displayDoc"><a href="#">Görüntüle</a></p>
+                <p class="linkToUpdate"><a href="#">Güncelle</a></p>
+                <p class="linkToDelete"><a href="#">Sil</a></p>
+            </div> -->
+        </div>
+    </div>
+
+
+
+
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+<script>
+
+    function changeFunc() {
+        // var selectBox = document.getElementById("userSelect");
+        // var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+        //var userSet = new Set() // --
+        $.ajax({
+            type: "GET",
+            url: "/admin/allDocs",
+            success: function (res) {
+                //alert(res)
+                var selectAtrr = createSelectBarForDate()
+                var selectAtrr2 = createSelectBarForType()
+                var selectAtrr3 = createSelectBarForUser()
+                var mySet = new Set()
+                var mySet2 = new Set()
+                var mySet3 = new Set()
+                var data = JSON.parse(res)
+                for (let i = 0; i < data.length; i++) {
+                    arrangeOptionsForDate(data[i], mySet, selectAtrr)
+                    arrangeOptionsForType(data[i], mySet2, selectAtrr2)
+                    arrangeOptionsForUser(data[i], mySet3, selectAtrr3)
+                }
+                // var selectAtrr = document.getElementById("userSelect")
+                // var allOfThem = "Hepsi"
+                // var firstOpt = document.createElement("option");
+                // firstOpt.setAttribute("value", `allOf`)
+                // var fT = document.createTextNode("Hepsi")
+                // firstOpt.appendChild(fT)
+                // selectAtrr.appendChild(firstOpt)
+
+                // var data = JSON.parse(res)
+                // for (let i = 0; i < data.length; i++) {
+                //     var tempUserName = data[i].name
+                //     var tempOPT = document.createElement("option");
+                //     tempOPT.setAttribute("value", `${data[i].name}`)
+                //     var t = document.createTextNode(tempUserName);
+                //     tempOPT.appendChild(t)
+                //     selectAtrr.appendChild(tempOPT)
+                // }
+            },
+            error: function (err) {
+
+            }
+        })
+    }
+    function createSelectBarForDate() {
+        var selectAtrr = document.getElementById("dateSelect")
+        var allOfThem = "Hepsi"
+        var firstOpt = document.createElement("option");
+        firstOpt.setAttribute("value", `allOf`)
+        var fT = document.createTextNode("Hepsi")
+        firstOpt.appendChild(fT)
+        selectAtrr.appendChild(firstOpt)
+        return selectAtrr
+    }
+
+    function createSelectBarForType() {
+        var selectAtrr = document.getElementById("typeSelect")
+        var allOfThem = "Hepsi"
+        var firstOpt = document.createElement("option");
+        firstOpt.setAttribute("value", `allOf`)
+        var fT = document.createTextNode("Hepsi")
+        firstOpt.appendChild(fT)
+        selectAtrr.appendChild(firstOpt)
+        return selectAtrr
+    }
+
+    function createSelectBarForUser() {
+        var selectAtrr = document.getElementById("userSelect")
+        var allOfThem = "Hepsi"
+        var firstOpt = document.createElement("option");
+        firstOpt.setAttribute("value", `allOf`)
+        var fT = document.createTextNode("Hepsi")
+        firstOpt.appendChild(fT)
+        selectAtrr.appendChild(firstOpt)
+        return selectAtrr
+    }
+
+    //function getOptionForDate(el){}
+    //function getOptionForUser(el){}
+    //getOptionForType(el){}
+    function getOptionForUser(el) {
+        document.getElementById("searchKeywordID").value = ""
+        const option = el.value;
+        if (option === 'esc') return
+        console.log(option);
+        if (option == "allOf") {
+            toHideElementWithoutClick()
+            alwaysInvoke2()
+        } else {
+            var eType = document.getElementById("typeSelect")
+            var eDate = document.getElementById("dateSelect")
+            var selectedType = eType.value;
+            var selectedDate = eDate.value
+            if (selectedType == "allOf" && selectedDate == "allOf" && option == "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            } else if (selectedType != "allOf" && selectedDate == "allOf" && option == "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?typeOfDoc=${selectedType}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            } else if (selectedType == "allOf" && selectedDate != "allOf" && option == "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?deploy_date=${selectedDate}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            } else if (selectedDate == "allOf" && selectedType == "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${option}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedDate != "allOf" && selectedType == "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${option}&deploy_date=${selectedDate}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedDate == "allOf" && selectedType != "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${option}&typeOfDoc=${selectedType}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedType != "allOf" && selectedDate != "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${option}&deploy_date=${selectedDate}&typeOfDoc=${selectedType}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }
+        }
+    }
+
+    function getOptionForDate(el){
+        document.getElementById("searchKeywordID").value = ""
+        const option = el.value;
+        if (option === 'esc') return
+        console.log(option);
+        if (option == "allOf") {
+            toHideElementWithoutClick()
+            alwaysInvoke2()
+        }else{
+            var eUser = document.getElementById("userSelect")
+            var eType = document.getElementById("typeSelect")
+            var selectedType = eType.value;
+            var selectedUser = eUser.value;
+            if (selectedType == "allOf" && selectedUser == "allOf" && option == "allOf"){
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedType!= "allOf" && selectedUser == "allOf" && option == "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?typeOfDoc=${selectedType}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedType == "allOf" && selectedUser != "allOf" && option == "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${selectedUser}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedType == "allOf" && selectedUser == "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?deploy_date=${option}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedUser != "allOf" && selectedType == "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${selectedUser}&deploy_date=${option}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedUser == "allOf" && selectedType != "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?deploy_date=${option}&typeOfDoc=${selectedType}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedUser != "allOf" && selectedType != "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${selectedUser}&deploy_date=${option}&typeOfDoc=${selectedType}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }
+        }
+    }
+    //-------------
+    function getOptionForType(el){
+        document.getElementById("searchKeywordID").value = ""
+        const option = el.value;
+        if (option === 'esc') return
+        console.log(option);
+        if (option == "allOf") {
+            toHideElementWithoutClick()
+            alwaysInvoke2()
+        }else{
+            var eUser = document.getElementById("userSelect")
+            var eDate = document.getElementById("dateSelect")
+            var selectedDate = eDate.value;
+            var selectedUser = eUser.value;
+            if (selectedUser == "allOf" && selectedDate == "allOf" && option == "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedDate != "allOf" && selectedUser == "allOf" && option == "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?deploy_date=${selectedDate}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedDate == "allOf" && selectedUser != "allOf" && option == "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${selectedUser}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedDate == "allOf" && selectedUser == "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?typeOfDoc=${option}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedDate != "allOf" && selectedUser == "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?deploy_date=${selectedDate}&typeOfDoc=${option}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedDate == "allOf" && selectedUser != "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${selectedUser}&typeOfDoc=${option}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }else if (selectedDate != "allOf" && selectedUser != "allOf" && option != "allOf") {
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?owner_name=${selectedUser}&deploy_date=${selectedDate}&typeOfDoc=${option}`,
+                    success: function (res) {
+                        toHideElementWithoutClick()
+                        displayQueryResults(res)
+                    },
+                    error: function (err) {
+                        alert("error caused by querying by name")
+                    }
+                })
+            }
+        }
+    }
+
+    function getOption(el) { // -- its gonna be deleted
+        document.getElementById("searchKeywordID").value = ""
+        const option = el.value;
+        if (option === 'esc') return
+        console.log(option);
+        if (option == "allOf") {
+            toHideElementWithoutClick()
+            alwaysInvoke2()
+        } else {
+            $.ajax({
+                type: "GET",
+                url: `/admin/allDocs?owner_name=${option}`,
+                success: function (res) {
+                    toHideElementWithoutClick()
+                    displayQueryResults(res)
+                },
+                error: function (err) {
+                    alert("error caused by querying by name")
+                }
+            })
+        }
+        //alert(option) // to get user name
+
+        return option;
+    }
+
+    function arrangeOptionsForType(subData, mySet2, selectAtrr2) { // data[i] subData
+        var mySet = new Set()
+        var tempType = subData.metadata.typeOfDoc
+        var tempOPT = document.createElement("option");
+        tempOPT.setAttribute("value", `${subData.metadata.typeOfDoc}`)
+        var t = document.createTextNode(tempType);
+        if (!mySet2.has(subData.metadata.typeOfDoc)) {
+            mySet2.add(subData.metadata.typeOfDoc)
+            tempOPT.appendChild(t)
+            selectAtrr2.appendChild(tempOPT)
+        }
+
+    }
+    function arrangeOptionsForUser(subData, mySet, selectAtrr) {
+        var tempUserName = subData.metadata.owner_name
+        var tempOPT = document.createElement("option");
+        tempOPT.setAttribute("value", `${subData.metadata.owner_name}`)
+        var t = document.createTextNode(tempUserName);
+        if (!mySet.has(subData.metadata.owner_name)) {
+            mySet.add(subData.metadata.owner_name)
+            tempOPT.appendChild(t)
+            selectAtrr.appendChild(tempOPT)
+        }
+    }
+
+    function arrangeOptionsForDate(subData, mySet, selectAtrr) {
+        var tempUserName = subData.metadata.deploy_date
+        var tempOPT = document.createElement("option");
+        tempOPT.setAttribute("value", `${subData.metadata.deploy_date}`)
+        var t = document.createTextNode(tempUserName);
+        if (!mySet.has(subData.metadata.deploy_date)) {
+            mySet.add(subData.metadata.deploy_date)
+            tempOPT.appendChild(t)
+            selectAtrr.appendChild(tempOPT)
+        }
+    }
+
+
+
+    $("#showTemAll").click(function (e) {
+        toHideElementWithoutClick()
+        //alwaysInvoke()
+        alwaysInvoke2()
+    })
+
+    $("#logOutForAdmin").click(function (e) {
+        // /admin/logOut
+        e.preventDefault()
+        $.ajax({
+            url: "/admin/logOut",
+            type: "POST",
+            success: function (res) {
+                alert("admin has been deleted")
+                window.location.href = "/"
+            },
+            error: function (err) {
+                alert("an error occured")
+            }
+        })
+    })
+
+    function searcPdfByKeyword() {
+        document.getElementById("searchKeywordBtn").addEventListener("click", function (e) {
+            if (document.getElementById("searchKeywordID").value == "") {
+                alert("arama kısmına birşeyler yazın")
+            } else {
+                //alert(document.getElementById("searchKeywordID").value)
+                $.ajax({
+                    type: "GET",
+                    url: `/admin/allDocs?keywords=${document.getElementById("searchKeywordID").value}`,
+                    success: function (res) {
+                        //  alert(res)
+                        toHideElementWithoutClick()
+                        if (res.trim() == "null") {
+                            document.getElementById("infoDoc").textContent = "İlgili veri bulunamadı"
+                        } else {
+                            displayQueryResults(res)
+                        }
+                    },
+                    error: function (err) {
+                        alert("an error occured during searching")
+                    }
+                })
+            }
+        })
+    }
+
+    function displayQueryResults(response) {
+        var data = JSON.parse(response)
+        if (response.trim() == "null"){
+            document.getElementById("infoDoc").textContent = "İlgili veri bulunamadı"
+        }else{
+            document.getElementById("infoDoc").textContent = ""
+        for (let i = 0; i < data.length; i++) {
+            var div = document.createElement("div")
+            div.className = "singleResult"
+            var pId = document.createElement("p")
+            pId.className = "docId"
+            pId.textContent = data[i]._id
+            var pName = document.createElement("p")
+            pName.className = "docName"
+            pName.textContent = data[i].filename
+            var pBelongto = document.createElement("p")
+            pBelongto.className = "belongTo"
+            pBelongto.textContent = data[i].metadata.owner_name
+            var displayDoc = document.createElement("p")
+            displayDoc.className = "displayDoc"
+            var aDisplay = document.createElement("a")
+            aDisplay.target = "_blank"
+            aDisplay.textContent = "Görüntüle"
+            aDisplay.href = `/admin/display/doc/${data[i]._id}`
+            displayDoc.appendChild(aDisplay)
+            var linkToUpdate = document.createElement("p")
+            linkToUpdate.className = "linkToUpdate"
+            var aLinkToUpd = document.createElement("a")
+            aLinkToUpd.href = "#"
+            aLinkToUpd.textContent = "Güncelle"
+            linkToUpdate.appendChild(aLinkToUpd)
+            var linkToDelete = document.createElement("p")
+            linkToDelete.className = "linkToDelete"
+            var aLinkToDelete = document.createElement("a")
+            aLinkToDelete.href = "#"
+            aLinkToDelete.textContent = "Sil"
+            aLinkToDelete.id = `${data[i]._id}DocDel`
+            linkToDelete.appendChild(aLinkToDelete)
+            // var pDelete = document.createElement("p")
+            // p.className = 
+            div.appendChild(pId)
+            div.appendChild(pName)
+            div.appendChild(pBelongto)
+            div.appendChild(displayDoc)
+            div.appendChild(linkToUpdate)
+            div.appendChild(linkToDelete)
+            document.getElementById("showDocs").appendChild(div)
+        }
+        
+            //alert("ok bro")
+        }
+
+
+    }
+    function toHideElementWithoutClick() {
+        // if (document.getElementById("showDocs").style.display != "none") {
+        //     document.getElementById("showDocs").style.display= "none"
+        // }else {
+        //     document.getElementById("showDocs").style.display = "inline"
+        // }    
+        var x = document.getElementById("showDocs").getElementsByClassName("singleResult")
+        for (let i = 0; i < x.length; i++) {
+            x[i].style.display = "none"
+        }
+    }
+
+    function toHideElementByClick() {
+        document.getElementById("hideElement").addEventListener("click", function (e) {
+            if (document.getElementById("showDocs").style.display != "none") {
+                document.getElementById("showDocs").style.display = "none"
+            } else {
+                document.getElementById("showDocs").style.display = "inline"
+            }
+        })
+    }
+
+    function alwaysInvoke2() {
+        $.ajax({
+            url: "/admin/allDocs",
+            type: "GET",
+            success: function (res) {
+                var data = JSON.parse(res)
+                if (res.trim() == "null") {
+                    document.getElementById("infoDoc").textContent = "Döküman yok"
+                } else {
+                    document.getElementById("infoDoc").textContent = ""
+                    for (let i = 0; i < data.length; i++) {
+                        var div = document.createElement("div")
+                        div.className = "singleResult"
+                        var pId = document.createElement("p")
+                        pId.className = "docId"
+                        pId.textContent = data[i]._id
+                        var pName = document.createElement("p")
+                        pName.className = "docName"
+                        pName.textContent = data[i].filename
+                        var pBelongto = document.createElement("p")
+                        pBelongto.className = "belongTo"
+                        pBelongto.textContent = data[i].metadata.owner_name
+                        var displayDoc = document.createElement("p")
+                        displayDoc.className = "displayDoc"
+                        var aDisplay = document.createElement("a")
+                        aDisplay.target = "_blank"
+                        aDisplay.textContent = "Görüntüle"
+                        aDisplay.href = `/admin/display/doc/${data[i]._id}`
+                        displayDoc.appendChild(aDisplay)
+                        var linkToUpdate = document.createElement("p")
+                        linkToUpdate.className = "linkToUpdate"
+                        var aLinkToUpd = document.createElement("a")
+                        aLinkToUpd.href = "#"
+                        aLinkToUpd.textContent = "Güncelle"
+                        linkToUpdate.appendChild(aLinkToUpd)
+                        var linkToDelete = document.createElement("p")
+                        linkToDelete.className = "linkToDelete"
+                        var aLinkToDelete = document.createElement("a")
+                        aLinkToDelete.href = "#"
+                        aLinkToDelete.textContent = "Sil"
+                        aLinkToDelete.id = `${data[i]._id}DocDel`
+                        linkToDelete.appendChild(aLinkToDelete)
+                        // var pDelete = document.createElement("p")
+                        // p.className = 
+                        div.appendChild(pId)
+                        div.appendChild(pName)
+                        div.appendChild(pBelongto)
+                        div.appendChild(displayDoc)
+                        div.appendChild(linkToUpdate)
+                        div.appendChild(linkToDelete)
+                        document.getElementById("showDocs").appendChild(div)
+                        //deleteDocs(data[i]._id)
+                        deleteDocByClick(data[i])
+                    }
+                }
+            },
+            error: function (err) {
+                alert(`error --> ${err}`)
+            }
+        })
+    }
+
+    function alwaysInvoke() {
+        $.ajax({
+            url: "/users",
+            type: "GET",
+            success: function (res) {
+
+                //$("#myUsers").text(JSON.stringify(res))
+                var data = JSON.parse(res)
+                //   alert("data parsed --> " + JSON.stringify(data) + "id --> " + data[0]["_id"])
+
+                if (res.trim() == "null") {
+                    $("#noUser").text("Gösterilecek kullanıcı yok")
+                } else {
+                    $("#noUser").text("")
+                    for (let i = 0; i < data.length; i++) {
+                        var div = document.createElement("div")
+                        div.className = "singleResult"
+                        //alert(data[i]._id)
+                        var pId = document.createElement("p")
+                        pId.className = "userId"
+                        pId.textContent = data[i]._id
+                        var pName = document.createElement("p")
+                        pName.className = "userName"
+                        pName.textContent = data[i].name
+                        var pLastName = document.createElement("p")
+                        pLastName.className = "lastName"
+                        pLastName.textContent = data[i].lastname
+                        var pType = document.createElement("p")
+                        pType.className = "userType"
+                        pType.textContent = data[i].type
+
+                        var pToUpdate = document.createElement("p")
+                        pToUpdate.className = "linkToUpdate"
+                        var aUpd = document.createElement("a")
+                        aUpd.textContent = "Güncelle"
+                        aUpd.href = `/admin/update/${data[i]._id}` // --
+                        aUpd.id = `${data[0]._id}upd`
+                        pToUpdate.appendChild(aUpd)
+                        var pToDelete = document.createElement("p")
+                        pToDelete.className = "linkToDelete"
+                        var aDel = document.createElement("a")
+                        aDel.textContent = "Sil"
+                        aDel.href = `/delete/${data[i]._id}` // --
+                        aDel.id = `${data[i]._id}aDel`
+                        pToDelete.appendChild(aDel)
+                        div.appendChild(pId)
+                        div.appendChild(pName)
+                        div.appendChild(pLastName)
+                        div.appendChild(pType)
+                        div.appendChild(pToUpdate)
+                        div.appendChild(pToDelete)
+                        document.getElementById("userResults").appendChild(div)
+                        deleteTheUser(data[i])
+                        //deleteDocByClick(data[i])
+                    }
+                }
+            },
+            error: function (err) {
+
+            }
+            // click for del
+
+        })
+
+    }
+
+    alwaysInvoke()
+    alwaysInvoke2()
+    toHideElementByClick()
+    searcPdfByKeyword()
+    changeFunc()
+    function deleteTheUser(subData) {
+        document.getElementById(`${subData._id}aDel`).addEventListener("click", function (e) {
+            deleteDocs(`${subData._id}`)
+            $.ajax({
+                type: "DELETE",
+                url: `/delete/admin/${subData._id}`,
+                success: function (res) {
+                    alert("kullanıcı başarıyla silindi !")
+                    window.location.href = "/admin/inside"
+                    //deleteDocs(`${subData._id}`)
+                    alwaysInvoke()
+                    alwaysInvoke2()
+                },
+                error: function (err) {
+                    alert("error --> " + err)
+                }
+            })
+        })
+    }
+
+    function deleteDocs(id) {
+        // document.getElementById(`${id}DocDel`).addEventListener("click",function (e) {
+        $.ajax({
+            type: "DELETE",
+            url: `/admin/delete/allDocs/${id}`,
+            success: function (res) {
+                alert("kullanıcının bütün belgeleri silindi")
+                alwaysInvoke()
+                alwaysInvoke2()
+            },
+            error: function (err) {
+                alert("error occured during the delete the all docs")
+            }
+        })
+        //})
+
+    }
+
+    function deleteDocByClick(subData) {
+        document.getElementById(`${subData._id}DocDel`).addEventListener("click", function (e) {
+            $.ajax({
+                type: "DELETE",
+                url: `/delete/admin/doc/${subData._id}`,
+                success: function (res) {
+                    alert("döküman başarıyla silindi !")
+                    window.location.href = "/admin/inside"
+                    //deleteDocs(`${subData._id}`)
+                    alwaysInvoke()
+                    alwaysInvoke2()
+                },
+                error: function (err) {
+                    alert("error --> " + err)
+                }
+            })
+        })
+    }
+
+// function updateTheUser(subdata) {
+//     document.getElementById(`${subdata._id}upd`).addEventListener("click",function (e) {
+
+//     })
+// }
+</script>
+
+
+
+</html>

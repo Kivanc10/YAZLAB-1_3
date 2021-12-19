@@ -1,0 +1,22 @@
+body {
+    padding: 25px;
+    font-family: 'Fuzzy Bubbles', cursive;
+    background-color: slategrey;
+}
+
+h1 {
+    color: whitesmoke;
+    display: flex;
+    justify-content: center;
+}
+#btnDiv {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 3;
+}
+#options {
+    display: flex;
+    flex-direction: row;
+}
+
+

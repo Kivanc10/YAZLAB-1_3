@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+    <h1>User update</h1>
+
+    <form action= "/user/me/update/{{.userName}}" method="POST">
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="input_name">İsim</span>
+            <input type="text" name="name" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="input_price">Soy isim</span>
+            <input type="text" name="lastname" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+     
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Öğretim Türü</label>
+            </div>
+            <select name="myAction" class="custom-select" id="inputGroupSelect01">
+                <option selected>Seçin...</option>
+                <option value="1">Birinci Öğretim</option>
+                <option value="2">İkinci Öğretim</option>
+            </select>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="input_number">Numara</span>
+            <input type="text" name="number" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+        <div id="btnDiv">
+            <input type="submit" value="Kullanıcıyı kaydet" id="updateBtn" />
+        </div>
+    </form>
+</body>
+</html>

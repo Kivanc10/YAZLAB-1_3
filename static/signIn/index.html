@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <link rel="icon" href="/static/assets/kouLogo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./static/css/signIn.css">
+</head>
+<body>
+    <h1>Giriş Yap</h1>
+
+
+  <div id="content">
+    <form action="/signIn" method="POST">
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="input_price">Şifre</span>
+            <input id="inputPassword" type="password" name="password" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="input_number">Numara</span>
+            <input id="inputNumber" type="text" name="number" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+        <!-- <input type="submit" value="Giriş Yap" id="signInBtn" /> -->
+<div id="singInBtnDiv">
+    <input type="button" value="Giriş Yap" id="signInBtn" />
+</div>
+    </form>
+  </div>
+
+
+    <!-- <p id="token">{{.authToken}}</p> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    // document.getElementById("signInBtn").addEventListener("click",function (e) {
+    //     alert("you clicked")
+    // })
+    $("#signInBtn").click(function (e) {
+        var password = $("#inputPassword").val()
+        var number = $("#inputNumber").val()
+        var signInData = {
+            password : password,
+            number : number
+        }
+        //alert(`Password = ${password} , number = ${number}`)
+        e.preventDefault()
+        $.ajax({
+            url : "/signIn",
+            type : "POST",
+            data : signInData,
+            success : function (resp) {
+              //  alert(resp)
+                //console.log(resp)
+                isSignUpDone(resp)
+                //window.location.href = "/inside"
+            },
+            error : function (err) {
+                alert(`${err.responseText.toString()}`)
+            }
+        })
+        //isSignUpDone()
+    })
+
+
+    function isSignUpDone(response) { //response
+        var data = JSON.parse(response)
+        $.ajax({
+            url : "/inside",
+            type : "GET",
+            //dataType : "html",
+            // beforeSend : function (request) {
+            //     request.setRequestHeader("Token",data.Token[0].context)
+            //     request.setRequestHeader("userName",data["name"])
+            //     request.setRequestHeader("authToken",data["Token"][0]["context"])
+            // },
+            beforeSend : function (request) {
+                request.setRequestHeader("Token","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Mzg1NzIzMjIsImxhc3RfbmFtZSI6IkF5ZG9nbXVzIiwibnVtYmVyIjoiOTg3NjU0IiwidXNlcl9uYW1lIjoiS3ZuYyJ9.7qAvFEo-uP3D5gwRMnb8sKBiKeyjdb0MO0tZy5Q38R0")
+                request.setRequestHeader("userName","Kvnc")
+                request.setRequestHeader("authToken","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Mzg1NzIzMjIsImxhc3RfbmFtZSI6IkF5ZG9nbXVzIiwibnVtYmVyIjoiOTg3NjU0IiwidXNlcl9uYW1lIjoiS3ZuYyJ9.7qAvFEo-uP3D5gwRMnb8sKBiKeyjdb0MO0tZy5Q38R0")
+            },
+            // data : {
+            //     userName : data["name"],
+            //     authToken : data["Token"][0]["context"]
+            // },
+            success : function (resp) {
+              // alert(resp + " " + typeof resp)              
+                window.location.href = "/inside"
+                
+                
+                //window.history.pushState("devam","title","/inside")
+                
+            },
+            error : function (err) {
+                alert(`error : ${err}`)
+            }
+        })
+        // alert("data type--> " + typeof data)
+        // alert("json data --> " + data)
+    }
+</script>
+
+</body>
+</html>

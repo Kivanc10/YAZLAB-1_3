@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/adminUpdate.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+        <style> 
+            body {
+                background-color: slategrey;                
+            }
+        </style>
+</head>
+<body>
+    <h1>Kullanıcı Güncelle </h1>
+    <form action= "/user/update/{{._id}}" method="POST">
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="input_name">İsim</span>
+            <input type="text" name="name" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="input_price">Soy isim</span>
+            <input type="text" name="lastname" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+     
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Öğretim Türü</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01">
+                <option selected>Seçin...</option>
+                <option value="1">Birinci Öğretim</option>
+                <option value="2">İkinci Öğretim</option>
+            </select>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="input_number">Numara</span>
+            <input type="text" name="number" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+        <div id="btnDiv">
+            <input type="submit" value="Kullanıcıyı kaydet" id="updateBtn" />
+        </div>
+    </form>
+
+    <script>
+        
+    </script>
+</body>
+</html>

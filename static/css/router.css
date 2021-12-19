@@ -1,0 +1,16 @@
+body{
+    padding: 25px;
+    background-color: slategrey;
+    font-family: 'Fuzzy Bubbles', cursive;
+}
+
+h1 {
+    color:whitesmoke;
+    display: flex;
+    justify-content: center;
+    
+}
+
+#content {
+    padding-top: 50px;
+}

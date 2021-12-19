@@ -1,0 +1,24 @@
+body {
+    padding : 25px;
+    font-family: 'Fuzzy Bubbles', cursive;
+    background-color: slategrey;
+}
+
+h1 {
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+#content {
+    padding-top: 25px;
+    
+}
+
+#singInBtnDiv {
+    display: flex;
+    justify-content: flex-end;
+}
+#signInBtn {
+    width: 100px;
+}

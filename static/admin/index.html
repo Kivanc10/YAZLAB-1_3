@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/admin.css">
+    <style>
+        #isLoggedAlready a {
+            text-decoration-line: none;
+            color: cyan;            
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        #isLoggedAlready {
+            flex-grow: 3;            
+        }
+       
+    </style>
+</head>
+
+<body>
+    <h1>Admin Girişi</h1>
+    <!-- /adminLogin -->
+    <form action="" method="POST">
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text">Admin kullanıcı adı</span>
+            <input type="text" id="input_name" name="name" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="input_price">Parola</span>
+            <input type="password" id="input_password" name="password" class="form-control"
+                aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" required />
+        </div>
+        <div id="options">
+            <div id="isLoggedAlready">
+                <a href="/admin/inside">Zaten giriş yaptıysanız tıklayın</a>
+            </div>
+            <div id="btnDiv">
+                <input type="submit" value="Giriş Yap" id="adminSingIn" />
+            </div>
+        </div>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $("#adminSingIn").click(function (e) {
+            var name = $("#input_name").val()
+            var password = $("#input_password").val()           
+            var myData = {
+                name: name,
+                password: password
+            }
+            e.preventDefault()
+            $.ajax({
+                url: "/adminLogin",
+                type: "POST",
+                data: myData,
+                success: function (res) {
+                    // alert(`success ==> ${res}`)
+                    jumpIntoAdminInside(res)
+                },
+                error: function (err) {
+                    alert(`error ${JSON.stringify(err)}`)
+                }
+            })
+        })
+
+        function jumpIntoAdminInside(response) {
+            var data = JSON.parse(response)
+            // alert(`type of response --> ${typeof response}`)
+            //alert(`data --> ${JSON.stringify(data)}`)
+            $.ajax({
+                url: "/admin/inside",
+                type: "GET",
+                beforeSend: function (request) {
+                    request.setRequestHeader("admin", data.name)
+                },
+                success: function (res) {
+                    //alert("okey")
+                    window.location.href = "/admin/inside"
+                },
+                error: function (err) {
+                    alert(`error : ${e}`)
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
