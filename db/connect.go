@@ -48,9 +48,10 @@ func CreateToken(name, lastname, number string) (string, error) {
 }
 
 func ConnectToMongoDb() *mongo.Client {
+	os.Setenv("MONGODB_URI", "mongodb://mongo/")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://127.0.0.1:27017/"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
 	if err != nil {
 		panic(err)
 	}
