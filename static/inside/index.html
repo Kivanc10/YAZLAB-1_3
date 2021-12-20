@@ -29,15 +29,18 @@
     }
 
     .docFeatureName {
-      flex-grow: 1;
+      flex-grow: 3;
     }
 
     .docFeatureUploadDate {
-      flex-grow: 1;
+      flex-grow: 3;
     }
 
     .docFeatureDisplay {
-      flex-grow: 1;
+      flex-grow: 3;
+    }
+    .docDeleteP{
+      flex-grow: 3;
     }
 
     #myDocs {
@@ -488,10 +491,23 @@
               aDisplay.href = `/display/doc/${data[i]._id}`
               aDisplay.textContent = "Görüntüle"
               pDisplay.appendChild(aDisplay)
+              //--
+              var pDelete = document.createElement("p")
+              pDelete.className = "docDeleteP"
+              var aDelete = document.createElement("a")
+              aDelete.href="#"
+              aDelete.textContent = "Sil"
+              aDelete.id = `${data[i]._id}DocDell`
+              pDelete.appendChild(aDelete)
+              
+
+              //--
               div.appendChild(pName)
               div.appendChild(pUploadDate)
               div.appendChild(pDisplay)
+              div.appendChild(pDelete)
               document.getElementById("myDocs").appendChild(div)
+              deleteDocByUser(data[i])
             }
           }
         },
@@ -503,6 +519,25 @@
     alwaysFillDocs()
     changeFunc()
     searcPdfByKeyword()
+
+    function deleteDocByUser(subData) {
+      //DocDell
+      document.getElementById(`${subData._id}DocDell`).addEventListener("click",function (e) {
+        $.ajax({
+                type: "DELETE",
+                url: `/delete/user/doc/${subData._id}`,
+                success: function (res) {
+                    alert("döküman başarıyla silindi !")
+                    window.location.href = "/inside"
+                    //deleteDocs(`${subData._id}`)
+                   alwaysFillDocs()
+                },
+                error: function (err) {
+                    alert("error --> " + err)
+                }
+            })
+      })
+    }
 
   </script>
 </body>

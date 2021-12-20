@@ -50,7 +50,7 @@ func CreateToken(name, lastname, number string) (string, error) {
 func ConnectToMongoDb() *mongo.Client {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://mongo:27017/"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://127.0.0.1:27017/")) //mongo
 	if err != nil {
 		panic(err)
 	}
@@ -1022,6 +1022,22 @@ func DeleteDocByAdminClick(client *mongo.Client, givenId string) {
 	}
 	res = collection.FindOneAndDelete(context.Background(), filter1)
 
+}
+
+func DeleteDocByUser(client *mongo.Client, givenId string) {
+	collection := client.Database("User").Collection("fs.files")
+	hexByte, err := primitive.ObjectIDFromHex(givenId)
+	if err != nil {
+		panic(err)
+	}
+	filter1 := bson.M{"_id": bson.M{"$eq": hexByte}}
+	res := collection.FindOne(context.Background(), filter1)
+	var doc student.Doc
+	if err := res.Decode(&doc); err != nil {
+		log.Fatal(err)
+		//return &student.Student{}
+	}
+	res = collection.FindOneAndDelete(context.Background(), filter1)
 }
 
 func downloadItForTemp(data []byte) map[string]interface{} {

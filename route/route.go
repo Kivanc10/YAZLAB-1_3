@@ -415,6 +415,12 @@ func deleteDocByAdminClick(w http.ResponseWriter, r *http.Request) {
 	db.DeleteDocByAdminClick(client, key)
 }
 
+func deleteDocByUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	key := vars["id"]
+	db.DeleteDocByUser(client, key)
+}
+
 func HandleRequest() {
 	client = db.ConnectToMongoDb()
 	myRouter := NewRouter() // NewRouter()
@@ -451,6 +457,7 @@ func HandleRequest() {
 	myRouter.Handle("/user/delete/allDocs/{name}", middlewareOne(middleware.IsAuth(deleteUsersAllDocsByUserName)))
 	myRouter.HandleFunc("/signUp", addUser).Methods("POST")
 	myRouter.Handle("/delete/admin/doc/{id}", middlewareForAdmin(middleware.IsAdminLoggedIn(deleteDocByAdminClick)))
+	myRouter.Handle("/delete/user/doc/{id}", middlewareOne(middleware.IsAuth(deleteDocByUser))).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8080", myRouter))
 }
 

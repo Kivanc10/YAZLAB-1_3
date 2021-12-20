@@ -173,7 +173,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
 <script>
-
+    //var settoShowDeletedFiles = new Set()
     function changeFunc() {
         // var selectBox = document.getElementById("userSelect");
         // var selectedValue = selectBox.options[selectBox.selectedIndex].value;
@@ -695,12 +695,12 @@
             aDisplay.textContent = "Görüntüle"
             aDisplay.href = `/admin/display/doc/${data[i]._id}`
             displayDoc.appendChild(aDisplay)
-            var linkToUpdate = document.createElement("p")
-            linkToUpdate.className = "linkToUpdate"
-            var aLinkToUpd = document.createElement("a")
-            aLinkToUpd.href = "#"
-            aLinkToUpd.textContent = "Güncelle"
-            linkToUpdate.appendChild(aLinkToUpd)
+            // var linkToUpdate = document.createElement("p")
+            // linkToUpdate.className = "linkToUpdate"
+            // var aLinkToUpd = document.createElement("a")
+            // aLinkToUpd.href = "#"
+            // aLinkToUpd.textContent = "Güncelle"
+            // linkToUpdate.appendChild(aLinkToUpd)
             var linkToDelete = document.createElement("p")
             linkToDelete.className = "linkToDelete"
             var aLinkToDelete = document.createElement("a")
@@ -757,6 +757,10 @@
                 } else {
                     document.getElementById("infoDoc").textContent = ""
                     for (let i = 0; i < data.length; i++) {
+                        // if (!settoShowDeletedFiles.has(data[i].filename)){
+                        //     settoShowDeletedFiles.add(data[i].filename)
+                        // }
+                        // console.log(settoShowDeletedFiles)
                         var div = document.createElement("div")
                         div.className = "singleResult"
                         var pId = document.createElement("p")
@@ -879,6 +883,7 @@
     toHideElementByClick()
     searcPdfByKeyword()
     changeFunc()
+
     function deleteTheUser(subData) {
         document.getElementById(`${subData._id}aDel`).addEventListener("click", function (e) {
             deleteDocs(`${subData._id}`)
