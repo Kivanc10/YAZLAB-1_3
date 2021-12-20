@@ -50,7 +50,7 @@ func CreateToken(name, lastname, number string) (string, error) {
 func ConnectToMongoDb() *mongo.Client {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://127.0.0.1:27017/")) //mongo
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://mongo:27017/")) //write 127.0.0.1 insted mongo for localhost
 	if err != nil {
 		panic(err)
 	}
